@@ -137,10 +137,9 @@ class CronJobManager(object):
                 if actual_time >= user_time:
                     qset = CronJobLog.objects.filter(
                         code=cron_job.code,
+                        start_time__gt=now,
                         ran_at_time=time_data,
                         is_success=True
-                    ).filter(
-                        Q(start_time__gt=now) | Q(end_time__gte=now.replace(hour=0, minute=0, second=0, microsecond=0))
                     )
                     if not qset:
                         self.user_time = time_data
